@@ -6,6 +6,7 @@
 //Constants
 const int pResistor = A0; // Photoresistor at Arduino analog pin A0
 const int ledPin=9;       // Led pin at Arduino pin 9
+int piezoPin = 12; //sound
 
 //Variables
 int value;          // Store value from photoresistor (0-1023)
@@ -21,13 +22,31 @@ void loop(){
   value = analogRead(pResistor);
   Serial.print("photocell value ");
   Serial.println(value);
-  
-  //You can change value "25"
+
+  // piezo values between 2,000 and 5,000 
+  // light value tends to be 5000>v<1000
   if (value > 800){
     digitalWrite(ledPin, LOW);  //Turn led off
   }
-  else{
+  else if (value > 700){
+    tone(piezoPin, 1500, 300);
+    delay(300);
+  }
+  else if (value > 600){
+    tone(piezoPin, 4000, 300);
+    delay(300);
+   }
+  else if (value >500){
+    
     digitalWrite(ledPin, HIGH); //Turn led on
+
+    /*Tone needs 2 arguments, but can take three
+    1) Pin#
+    2) Frequency - this is in hertz (cycles per second) which determines the pitch of the noise made
+    3) Duration - how long teh tone plays
+  */
+    tone(piezoPin, 1000, 300);
+    delay(300);
   }
 
   delay(500); //Small delay
